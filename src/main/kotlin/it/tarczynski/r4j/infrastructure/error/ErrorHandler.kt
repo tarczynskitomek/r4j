@@ -1,5 +1,7 @@
 package it.tarczynski.r4j.infrastructure.error
 
+import it.tarczynski.r4j.adapters.NotFoundException
+import it.tarczynski.r4j.adapters.product.ProductNotFoundException
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseStatus

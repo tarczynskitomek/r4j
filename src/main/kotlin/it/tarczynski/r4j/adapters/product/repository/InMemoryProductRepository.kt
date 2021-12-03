@@ -4,7 +4,7 @@ import it.tarczynski.r4j.domain.makeProduct
 import it.tarczynski.r4j.domain.product.Product
 import it.tarczynski.r4j.domain.product.ProductId
 import it.tarczynski.r4j.domain.product.ProductRepository
-import it.tarczynski.r4j.infrastructure.error.ProductNotFoundException
+import it.tarczynski.r4j.adapters.product.ProductNotFoundException
 import java.util.concurrent.ConcurrentHashMap
 
 class InMemoryProductRepository : ProductRepository {
@@ -23,11 +23,11 @@ class InMemoryProductRepository : ProductRepository {
         return product
     }
 
-    override fun find(productId: ProductId): Product? = products[productId]
+    override fun findBy(id: ProductId): Product? = products[id]
 
     override fun findAll(): List<Product> = products.values.toList()
 
-    override fun get(productId: ProductId): Product = find(productId) ?: throw ProductNotFoundException(productId)
+    override fun getBy(id: ProductId): Product = findBy(id) ?: throw ProductNotFoundException(id)
 
 }
 

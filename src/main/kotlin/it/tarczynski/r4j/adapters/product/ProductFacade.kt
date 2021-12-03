@@ -14,9 +14,9 @@ class ProductFacade(
     fun productWithPrice(
         productId: String,
     ): ProductData {
-        val productId: ProductId = ProductId(productId)
-        val price: Price = priceService.getBestPriceFor(productId)
-        val product: Product = productRepository.get(productId)
+        val id = ProductId(productId)
+        val price: Price = priceService.getBestPriceFor(id)
+        val product: Product = productRepository.getBy(id)
         return ProductData.from(product, price)
     }
 }

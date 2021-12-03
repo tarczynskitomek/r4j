@@ -1,4 +1,4 @@
-package it.tarczynski.r4j.infrastructure.annotation
+package it.tarczynski.r4j.adapters.annotation
 
 import org.springframework.core.annotation.AliasFor
 import org.springframework.web.bind.annotation.RequestMapping

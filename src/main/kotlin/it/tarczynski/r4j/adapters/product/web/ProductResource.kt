@@ -2,7 +2,7 @@ package it.tarczynski.r4j.adapters.product.web
 
 import it.tarczynski.r4j.adapters.product.ProductData
 import it.tarczynski.r4j.adapters.product.ProductFacade
-import it.tarczynski.r4j.infrastructure.annotation.ApiV1
+import it.tarczynski.r4j.adapters.annotation.ApiV1
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 
