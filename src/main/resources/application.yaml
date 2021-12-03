@@ -1,1 +1,36 @@
 
+
+services:
+  price-service:
+    uri: http://localhost:8090
+    connect-timeout: PT0.01S
+    read-timeout: PT0.1S
+
+resilience4j.circuitbreaker:
+  metrics.enabled: true
+  instances:
+    price-repository:
+      registerHealthIndicator: true
+      slidingWindowSize: 10
+      permittedNumberOfCallsInHalfOpenState: 3
+      slidingWindowType: COUNT_BASED
+      minimumNumberOfCalls: 10
+      waitDurationInOpenState: 30s
+      failureRateThreshold: 50
+      eventConsumerBufferSize: 10
+
+resilience4j.retry:
+  metrics.enabled: true
+  instances:
+    price-repository:
+      maxAttempts: 3
+      waitDuration: 100
+      enableExponentialBackoff: true
+      exponentialBackoffMultiplier: 2
+
+logging:
+  level:
+    io.github.resilience4j: debug
+#
+#server:
+#  port: 8090

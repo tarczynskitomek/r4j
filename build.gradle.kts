@@ -20,8 +20,10 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation("com.github.tomakehurst:wiremock:2.27.2")
 
     implementation("io.github.resilience4j:resilience4j-all:1.7.1")
+    implementation("io.github.resilience4j:resilience4j-spring-boot2:1.7.1")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
@@ -29,7 +31,7 @@ dependencies {
 tasks.withType<KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = "17"
+        jvmTarget = "11"
     }
 }
 
