@@ -73,9 +73,11 @@ class ContextConfiguration {
             .build()
     }
 
-    private fun circuitBreaker(circuitBreakerRegistry: CircuitBreakerRegistry): CircuitBreaker =
+    private fun circuitBreaker(
+        circuitBreakerRegistry: CircuitBreakerRegistry,
+    ): CircuitBreaker =
         circuitBreakerRegistry.circuitBreaker("price-repository")
-            .also { circuitBreaker ->
+            .also { circuitBreaker: CircuitBreaker ->
                 circuitBreaker.eventPublisher.onEvent { e -> log.info("Circuit Breaker event: [{}]", e.eventType) }
             }
 
