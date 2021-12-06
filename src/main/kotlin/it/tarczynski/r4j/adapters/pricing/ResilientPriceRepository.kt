@@ -25,8 +25,7 @@ class ResilientPriceRepository(
             .withRetry(retry)
             .withCircuitBreaker(circuitBreaker)
             .withFallback { ex ->
-                // don't do this, log full exception with stacktrace!
-                logger.warn("Failed to fetch prices for product [${productId.raw}]", ex.message)
+                logger.warn("Failed to fetch prices for product [${productId.raw}]", ex)
                 emptySet()
             }
             .decorate()

@@ -75,7 +75,7 @@ private fun stubFlaky() {
             .withRequestBody(equalToJson("""{ "productId":"flaky" }"""))
             .willReturn(
                 okJsonBuilder().withRandomDelay(
-                    UniformDistribution(50, 550)
+                    UniformDistribution(50, 150)
                 )
             )
     )

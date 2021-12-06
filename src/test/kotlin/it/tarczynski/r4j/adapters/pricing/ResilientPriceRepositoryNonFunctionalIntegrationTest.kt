@@ -38,7 +38,7 @@ internal class ResilientPriceRepositoryNonFunctionalIntegrationTest {
     fun cleanup() {
         // reset circuit breaker's stats between tests
         circuitBreakerRegistry.circuitBreaker("price-repository").reset()
-        WireMock.reset()
+        WireMock.resetAllRequests()
     }
 
     @Test
