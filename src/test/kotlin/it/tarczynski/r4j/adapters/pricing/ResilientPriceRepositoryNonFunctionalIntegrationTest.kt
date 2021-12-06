@@ -1,8 +1,8 @@
 package it.tarczynski.r4j.adapters.pricing
 
-import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.client.WireMock.equalToJson
 import com.github.tomakehurst.wiremock.client.WireMock.putRequestedFor
+import com.github.tomakehurst.wiremock.client.WireMock.resetAllRequests
 import com.github.tomakehurst.wiremock.client.WireMock.urlMatching
 import com.github.tomakehurst.wiremock.client.WireMock.verify
 import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry
@@ -11,22 +11,19 @@ import io.github.resilience4j.circuitbreaker.event.CircuitBreakerEvent.Type.ERRO
 import io.github.resilience4j.circuitbreaker.event.CircuitBreakerEvent.Type.FAILURE_RATE_EXCEEDED
 import io.github.resilience4j.circuitbreaker.event.CircuitBreakerEvent.Type.NOT_PERMITTED
 import io.github.resilience4j.circuitbreaker.event.CircuitBreakerEvent.Type.STATE_TRANSITION
-import it.tarczynski.r4j.R4jApplication
 import it.tarczynski.r4j.domain.product.PriceRepository
 import it.tarczynski.r4j.domain.product.ProductId
+import it.tarczynski.r4j.infrastructure.config.Constants.CircuitBreaker.PRICE_REPOSITORY
+import it.tarczynski.r4j.test.BaseIntegrationTest
+import it.tarczynski.r4j.test.times
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
 
-@SpringBootTest(
-    classes = [R4jApplication::class],
-    properties = ["application.environment=integration"],
-)
 @ActiveProfiles("with-resilience")
-internal class ResilientPriceRepositoryNonFunctionalIntegrationTest {
+internal class ResilientPriceRepositoryNonFunctionalIntegrationTest : BaseIntegrationTest() {
 
     @Autowired
     private lateinit var resilientPriceRepository: PriceRepository
@@ -37,8 +34,8 @@ internal class ResilientPriceRepositoryNonFunctionalIntegrationTest {
     @AfterEach
     fun cleanup() {
         // reset circuit breaker's stats between tests
-        circuitBreakerRegistry.circuitBreaker("price-repository").reset()
-        WireMock.resetAllRequests()
+        circuitBreakerRegistry.circuitBreaker(PRICE_REPOSITORY).reset()
+        resetAllRequests()
     }
 
     @Test
@@ -79,10 +76,10 @@ internal class ResilientPriceRepositoryNonFunctionalIntegrationTest {
         val events: MutableList<CircuitBreakerEvent> = mutableListOf()
 
         // and
-        circuitBreakerRegistry.circuitBreaker("price-repository").eventPublisher.onEvent { e -> events += e }
+        circuitBreakerRegistry.circuitBreaker(PRICE_REPOSITORY).eventPublisher.onEvent { e -> events += e }
 
         // when
-        times(5) {
+        times(repetitions = 5) {
             resilientPriceRepository.findPricesBy(ProductId("failing"))
         }
 
@@ -102,12 +99,4 @@ internal class ResilientPriceRepositoryNonFunctionalIntegrationTest {
         )
     }
 
-    fun times(repetitions: Int, possiblyThrowing: () -> Unit) {
-        for (i in 0..repetitions) {
-            try {
-                possiblyThrowing.invoke()
-            } catch (_: Exception) {
-            }
-        }
-    }
 }

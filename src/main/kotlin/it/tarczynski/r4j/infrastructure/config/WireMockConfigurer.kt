@@ -39,8 +39,11 @@ class WireMockConfigurer {
 
     @PreDestroy
     fun stopWireMockSever() {
-        logger.warn("Starting WireMock")
-        wiremock.stop()
+        if (hasStarted.get()) {
+            logger.info("Stopping WireMock")
+            wiremock.stop()
+            hasStarted.set(false)
+        }
     }
 
 }

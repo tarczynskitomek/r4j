@@ -12,6 +12,8 @@ import it.tarczynski.r4j.domain.TimeMachine
 import it.tarczynski.r4j.domain.product.PriceRepository
 import it.tarczynski.r4j.domain.product.PriceService
 import it.tarczynski.r4j.domain.product.PricingPolicy
+import it.tarczynski.r4j.infrastructure.config.Constants.SpringProfile.NOT_INTEGRATION
+import it.tarczynski.r4j.infrastructure.config.Constants.SpringProfile.WITH_RESILIENCE
 import it.tarczynski.r4j.infrastructure.loggerFor
 import org.slf4j.Logger
 import org.springframework.boot.web.client.RestTemplateBuilder
@@ -20,6 +22,8 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Primary
 import org.springframework.context.annotation.Profile
 import org.springframework.web.client.RestTemplate
+import it.tarczynski.r4j.infrastructure.config.Constants.CircuitBreaker.PRICE_REPOSITORY as PRICE_REPOSITORY_CIRCUIT_BREAKER
+import it.tarczynski.r4j.infrastructure.config.Constants.Retry.PRICE_REPOSITORY as PRICE_REPOSITORY_RETRY
 
 @Configuration
 class ContextConfiguration {
@@ -45,7 +49,7 @@ class ContextConfiguration {
 
     @Bean
     @Primary
-    @Profile("!integration", "with-resilience")
+    @Profile(NOT_INTEGRATION, WITH_RESILIENCE)
     fun resilientPriceRepository(
         priceRepository: PriceRepository,
         circuitBreakerRegistry: CircuitBreakerRegistry,
@@ -76,13 +80,13 @@ class ContextConfiguration {
     private fun circuitBreaker(
         circuitBreakerRegistry: CircuitBreakerRegistry,
     ): CircuitBreaker =
-        circuitBreakerRegistry.circuitBreaker("price-repository")
+        circuitBreakerRegistry.circuitBreaker(PRICE_REPOSITORY_CIRCUIT_BREAKER)
             .also { circuitBreaker: CircuitBreaker ->
                 circuitBreaker.eventPublisher.onEvent { e -> log.info("Circuit Breaker event: [{}]", e.eventType) }
             }
 
     private fun retry(retryRegistry: RetryRegistry): Retry {
-        return retryRegistry.retry("price-repository")
+        return retryRegistry.retry(PRICE_REPOSITORY_RETRY)
             .also { retry: Retry ->
                 retry.eventPublisher.onEvent { e -> log.info("Retry event: [{}]", e.eventType) }
             }
