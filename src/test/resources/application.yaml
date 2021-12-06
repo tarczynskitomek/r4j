@@ -9,23 +9,19 @@ resilience4j.circuitbreaker:
   instances:
     price-repository:
       registerHealthIndicator: true
-      slidingWindowSize: 10
+      slidingWindowSize: 5
       permittedNumberOfCallsInHalfOpenState: 3
       slidingWindowType: COUNT_BASED
-      minimumNumberOfCalls: 10
-      waitDurationInOpenState: 30s
-      failureRateThreshold: 50
-      eventConsumerBufferSize: 10
+      minimumNumberOfCalls: 5
+      waitDurationInOpenState: 10s
+      failureRateThreshold: 20
+      eventConsumerBufferSize: 5
 
 resilience4j.retry:
   metrics.enabled: true
   instances:
     price-repository:
       maxAttempts: 3
-      waitDuration: 100
+      waitDuration: 50
       enableExponentialBackoff: true
       exponentialBackoffMultiplier: 2
-
-logging:
-  level:
-    io.github.resilience4j: debug

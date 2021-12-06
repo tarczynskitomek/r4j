@@ -13,6 +13,7 @@ import com.github.tomakehurst.wiremock.matching.UrlPattern
 import it.tarczynski.r4j.infrastructure.loggerFor
 import org.slf4j.Logger
 import org.springframework.context.annotation.Configuration
+import java.util.concurrent.atomic.AtomicBoolean
 import javax.annotation.PostConstruct
 import javax.annotation.PreDestroy
 
@@ -22,11 +23,18 @@ class WireMockConfigurer {
     private val logger: Logger = loggerFor<WireMockConfigurer>()
     private val wiremock: WireMockServer = WireMockServer(8090)
 
+    companion object {
+        private val hasStarted: AtomicBoolean = AtomicBoolean(false)
+    }
+
     @PostConstruct
     fun startWireMockServer() {
-        logger.info("Starting WireMock on port 8090")
-        wiremock.start()
-        setupStubs()
+        if (!hasStarted.get()) {
+            logger.info("Starting WireMock on port 8090")
+            wiremock.start()
+            setupStubs()
+            hasStarted.set(true)
+        }
     }
 
     @PreDestroy

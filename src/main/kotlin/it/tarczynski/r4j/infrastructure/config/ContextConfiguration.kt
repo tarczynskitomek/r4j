@@ -45,7 +45,7 @@ class ContextConfiguration {
 
     @Bean
     @Primary
-    @Profile("!integration")
+    @Profile("!integration", "with-resilience")
     fun resilientPriceRepository(
         priceRepository: PriceRepository,
         circuitBreakerRegistry: CircuitBreakerRegistry,
