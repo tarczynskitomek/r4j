@@ -6,9 +6,9 @@ import it.tarczynski.r4j.infrastructure.loggerFor
 import org.slf4j.Logger
 import java.util.concurrent.ConcurrentHashMap
 
-class InMemoryPriceCache : PriceCache {
+class ConcurrentMapPriceCache : PriceCache {
 
-    private val logger: Logger = loggerFor<InMemoryPriceCache>()
+    private val logger: Logger = loggerFor<ConcurrentMapPriceCache>()
     private val prices: MutableMap<ProductId, Set<Price>> = ConcurrentHashMap()
 
     override fun set(
