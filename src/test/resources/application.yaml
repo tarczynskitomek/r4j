@@ -25,3 +25,5 @@ resilience4j.retry:
       waitDuration: 50
       enableExponentialBackoff: true
       exponentialBackoffMultiplier: 2
+      ignoreExceptions:
+        - org.springframework.web.client.HttpClientErrorException$NotFound

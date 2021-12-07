@@ -13,7 +13,7 @@ resilience4j.circuitbreaker:
       permittedNumberOfCallsInHalfOpenState: 3
       slidingWindowType: COUNT_BASED
       minimumNumberOfCalls: 10
-      waitDurationInOpenState: 30s
+      waitDurationInOpenState: 10s
       failureRateThreshold: 50
       eventConsumerBufferSize: 10
 
@@ -25,6 +25,8 @@ resilience4j.retry:
       waitDuration: 100
       enableExponentialBackoff: true
       exponentialBackoffMultiplier: 2
+      ignoreExceptions:
+        - org.springframework.web.client.HttpClientErrorException$NotFound
 
 logging:
   level:

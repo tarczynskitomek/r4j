@@ -5,6 +5,7 @@ import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry
 import io.github.resilience4j.retry.Retry
 import io.github.resilience4j.retry.RetryRegistry
 import it.tarczynski.r4j.adapters.pricing.ExternalPriceRepository
+import it.tarczynski.r4j.adapters.pricing.InMemoryPriceCache
 import it.tarczynski.r4j.adapters.pricing.ResilientPriceRepository
 import it.tarczynski.r4j.adapters.product.ProductFacade
 import it.tarczynski.r4j.adapters.product.repository.InMemoryProductRepository
@@ -57,7 +58,7 @@ class ContextConfiguration {
     ): PriceRepository {
         val retry: Retry = retry(retryRegistry)
         val circuitBreaker: CircuitBreaker = circuitBreaker(circuitBreakerRegistry)
-        return ResilientPriceRepository(priceRepository, circuitBreaker, retry)
+        return ResilientPriceRepository(priceRepository, circuitBreaker, retry, InMemoryPriceCache())
     }
 
     fun priceService(

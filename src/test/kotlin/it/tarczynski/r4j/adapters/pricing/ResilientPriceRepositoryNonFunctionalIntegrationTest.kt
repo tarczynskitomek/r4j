@@ -99,4 +99,18 @@ internal class ResilientPriceRepositoryNonFunctionalIntegrationTest : BaseIntegr
         )
     }
 
+    @Test
+    fun `should not retry on not found`() {
+        // when
+        resilientPriceRepository.findPricesBy(ProductId("not-found"))
+
+        // then
+        verify(
+            1, putRequestedFor(
+                urlMatching("\\/prices\\/do-calculate\\/.*")
+            ).withRequestBody(
+                equalToJson("""{ "productId":"not-found" }""")
+            )
+        )
+    }
 }

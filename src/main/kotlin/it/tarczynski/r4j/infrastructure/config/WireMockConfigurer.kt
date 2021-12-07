@@ -3,6 +3,7 @@ package it.tarczynski.r4j.infrastructure.config
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.client.WireMock.equalToJson
+import com.github.tomakehurst.wiremock.client.WireMock.notFound
 import com.github.tomakehurst.wiremock.client.WireMock.okJson
 import com.github.tomakehurst.wiremock.client.WireMock.put
 import com.github.tomakehurst.wiremock.client.WireMock.serverError
@@ -54,6 +55,7 @@ private fun setupStubs() {
     stubSlow()
     stubError()
     stubFlaky()
+    stubNotFound()
 }
 
 private fun stubFast() {
@@ -89,6 +91,14 @@ private fun stubError() {
         put(UrlPattern(RegexPattern("\\/prices\\/do-calculate\\/.*"), true))
             .withRequestBody(equalToJson("""{ "productId":"failing" }"""))
             .willReturn(serverError())
+    )
+}
+
+private fun stubNotFound() {
+    stubFor(
+        put(UrlPattern(RegexPattern("\\/prices\\/do-calculate\\/.*"), true))
+            .withRequestBody(equalToJson("""{ "productId":"not-found" }"""))
+            .willReturn(notFound())
     )
 }
 
