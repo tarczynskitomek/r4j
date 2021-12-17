@@ -1,0 +1,15 @@
+### Fast - the boring case
+GET http://localhost:8080/products/fast
+
+### Error
+GET http://localhost:8080/products/failing
+
+### Slow
+GET http://localhost:8080/products/slow
+
+### Flaky
+GET http://localhost:8080/products/flaky
+
+### Not Found
+GET http://localhost:8080/products/not-found
+
