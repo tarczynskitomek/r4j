@@ -1,10 +1,10 @@
 package it.tarczynski.r4j.adapters.product.repository
 
+import it.tarczynski.r4j.adapters.product.ProductNotFoundException
 import it.tarczynski.r4j.domain.makeProduct
 import it.tarczynski.r4j.domain.product.Product
 import it.tarczynski.r4j.domain.product.ProductId
 import it.tarczynski.r4j.domain.product.ProductRepository
-import it.tarczynski.r4j.adapters.product.ProductNotFoundException
 import java.util.concurrent.ConcurrentHashMap
 
 class InMemoryProductRepository : ProductRepository {
@@ -28,6 +28,5 @@ class InMemoryProductRepository : ProductRepository {
     override fun findAll(): List<Product> = products.values.toList()
 
     override fun getBy(id: ProductId): Product = findBy(id) ?: throw ProductNotFoundException(id)
-
 }
 

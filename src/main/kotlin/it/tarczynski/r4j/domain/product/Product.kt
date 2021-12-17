@@ -1,6 +1,5 @@
 package it.tarczynski.r4j.domain.product
 
-
 @JvmInline
 value class ProductId(val raw: String)
 
@@ -43,5 +42,4 @@ data class Product(
     override fun hashCode(): Int {
         return id.hashCode()
     }
-
 }

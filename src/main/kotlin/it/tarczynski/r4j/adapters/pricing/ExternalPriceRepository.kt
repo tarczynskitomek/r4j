@@ -1,16 +1,16 @@
 package it.tarczynski.r4j.adapters.pricing
 
 import it.tarczynski.r4j.adapters.pricing.PricesData.PriceData
-import it.tarczynski.r4j.domain.product.ProductId
 import it.tarczynski.r4j.domain.product.Price
 import it.tarczynski.r4j.domain.product.PriceRepository
+import it.tarczynski.r4j.domain.product.ProductId
 import it.tarczynski.r4j.infrastructure.config.PriceServiceProperties
 import org.springframework.http.RequestEntity
 import org.springframework.http.ResponseEntity
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.util.UriComponentsBuilder
 import java.net.URI
-import java.util.*
+import java.util.UUID
 
 class ExternalPriceRepository(
     private val restTemplate: RestTemplate,

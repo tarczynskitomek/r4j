@@ -46,7 +46,6 @@ class WireMockConfigurer {
             hasStarted.set(false)
         }
     }
-
 }
 
 private fun setupStubs() {

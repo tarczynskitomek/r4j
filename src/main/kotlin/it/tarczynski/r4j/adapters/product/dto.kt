@@ -1,11 +1,11 @@
 package it.tarczynski.r4j.adapters.product
 
 import it.tarczynski.r4j.domain.product.Currency
+import it.tarczynski.r4j.domain.product.Manufacturer
+import it.tarczynski.r4j.domain.product.Name
 import it.tarczynski.r4j.domain.product.Price
 import it.tarczynski.r4j.domain.product.Product
 import it.tarczynski.r4j.domain.product.ProductId
-import it.tarczynski.r4j.domain.product.Manufacturer
-import it.tarczynski.r4j.domain.product.Name
 import java.math.BigDecimal
 
 data class ProductData(
@@ -34,7 +34,6 @@ data class ProductData(
                 }
             )
         }
-
     }
 
     data class PriceData(
